@@ -1,12 +1,10 @@
 ## EX. NO:2 IMPLEMENTATION OF PLAYFAIR CIPHER
 
+### NAME: ABINAV AADITYA
+### REG NO: 212224040008
  
 
 ## AIM:
- 
-
- 
-
 To write a C program to implement the Playfair Substitution technique.
 
 ## DESCRIPTION:
@@ -34,10 +32,138 @@ STEP-5: Display the obtained cipher text.
 
 
 
-Program:
+## Program:
+```
+#include<stdio.h>
+#include<conio.h>
+#include<string.h>
+#include<ctype.h>
+#define MX 5
+void playfair(char ch1, char ch2, char key[MX][MX])
+{
+int i, j, w, x, y, z;
+FILE *out;
+if ((out = fopen("cipher.txt", "a+")) == NULL)
+{
+printf("File Corrupted.");
+}
+for (i = 0; i < MX; i++)
+{
+for (j = 0; j < MX; j++)
+{
+if (ch1 == key[i][j])
+{
+w = i;
+x = j;
+}
+else if (ch2 == key[i][j])
+{
+y = i;
+z = j;
+}
+}
+}
+if (w == y)
+{
+x = (x + 1) % 5;
+z = (z + 1) % 5;
+printf("%c%c", key[w][x], key[y][z]);
+fprintf(out, "%c%c", key[w][x], key[y][z]);
+}
+else if (x == z)
+{
+w = (w + 1) % 5;
+y = (y + 1) % 5;
+printf("%c%c", key[w][x], key[y][z]);
+fprintf(out, "%c%c", key[w][x], key[y][z]);
+}
+else
+{
+printf("%c%c", key[w][z], key[y][x]);
+fprintf(out, "%c%c", key[w][z], key[y][x]);
+}
+fclose(out);
+}
+int main()
+{
+int i, j, k = 0, l, m = 0, n;
+char key[MX][MX], keyminus[25], keystr[10], str[25] = {0};
+char alpa[26] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+printf("\nEnter key:");
+gets(keystr);
+printf("\nEnter the plain text:");
+gets(str);
+n = strlen(keystr);
+for (i = 0; i < n; i++)
+{
+if (keystr[i] == 'j') keystr[i] = 'i';
+else if (keystr[i] == 'J') keystr[i] = 'I';
+keystr[i] = toupper(keystr[i]);
+}
+for (i = 0; i < strlen(str); i++) {
+if (str[i] == 'j') str[i] = 'i';
+else if (str[i] == 'J') str[i] = 'I';
+str[i] = toupper(str[i]);
+}
+j = 0;
+for (i = 0; i < 26; i++)
+{
+for (k = 0; k < n; k++)
+{
+if (keystr[k] == alpa[i]) break;
+else if (alpa[i] == 'J') break;
+}
+if (k == n)
+{
+keyminus[j] = alpa[i];
+j++;
+}
+}
+k = 0;
+for (i = 0; i < MX; i++)
+{
+for (j = 0; j < MX; j++)
+{
+if (k < n)
+{
+key[i][j] = keystr[k];
+k++;
+}
+else
+{
+key[i][j] = keyminus[m];
+m++;
+}
+printf("%c ", key[i][j]);
+}
+printf("\n");
+The program is executed successfully.
+}
+printf("\n\nEntered text :%s\nCipher Text :",str);
+for (i = 0; i < strlen(str); i++)
+{
+if (str[i] == 'J') str[i] = 'I';
+if (str[i + 1] == '\0') playfair(str[i], 'X', key);
+else
+{
+if (str[i + 1] == 'J') str[i + 1] = 'I';
+if (str[i] == str[i + 1]) playfair(str[i], 'X', key);
+else
+{
+playfair(str[i], str[i + 1], key);
+i++;
+}
+}
+}
+printf("\nDecrypted text:%s",str);
+return 0;
+}
+```
 
 
+## Output:
+![Screenshot 2025-03-18 233616](https://github.com/user-attachments/assets/223f33ec-3317-4f05-8635-8456861293aa)
 
+## RESULT:
+The program is executed successfully.
 
-
-Output:
